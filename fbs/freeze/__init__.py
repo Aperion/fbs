@@ -7,7 +7,7 @@ from fbs_runtime.platform import is_mac
 from os import rename, makedirs
 from os.path import join, dirname
 from pathlib import PurePath
-from subprocess import run
+from PyInstaller.__main__ import run
 
 import fbs_runtime._frozen
 
@@ -20,7 +20,6 @@ def run_pyinstaller(extra_args=None, debug=False):
     # "hidden import not found". So use ERROR instead.
     log_level = 'DEBUG' if debug else 'ERROR'
     args = [
-        'pyinstaller',
         '--name', app_name,
         '--noupx',
         '--log-level', log_level,
@@ -44,7 +43,7 @@ def run_pyinstaller(extra_args=None, debug=False):
     hook_path = _generate_runtime_hook()
     args.extend(['--runtime-hook', hook_path])
     args.append(path(SETTINGS['main_module']))
-    run(args, check=True)
+    run(args)
     output_dir = path('target/' + app_name + ('.app' if is_mac() else ''))
     freeze_dir = path('${freeze_dir}')
     # In most cases, rename(src, dst) silently "works" when src == dst. But on
