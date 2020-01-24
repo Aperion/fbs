@@ -79,5 +79,7 @@ def _generate_resources():
         resources_dest_dir = freeze_dir
     for path_fn in default_path, path:
         for profile in LOADED_PROFILES:
+            if profile == 'secret':
+                continue
             _copy(path_fn, 'src/main/resources/' + profile, resources_dest_dir)
             _copy(path_fn, 'src/freeze/' + profile, freeze_dir)
